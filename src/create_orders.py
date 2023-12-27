@@ -16,9 +16,11 @@ def create_orders(orders_file_path):
         package_id = row['packages']
         item_id = row['items']
 
+        # Create package if it does not exist
         if package_id not in packages:
             packages[package_id] = Package(package_id, 0)
-                    
+        
+        # Create item if it does not exist
         if not packages[package_id].has_item(item_id):
             packages[package_id].add_item(Item(item_id))
         
@@ -26,6 +28,8 @@ def create_orders(orders_file_path):
         value = row['values']
         packages[package_id][item_id].update_by_label(label, value)
 
+
+    # Update item_id to be unique
     items_id = []
     for package_id in packages:
         for item in packages[package_id].get_items():
