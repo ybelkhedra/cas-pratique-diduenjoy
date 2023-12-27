@@ -1,5 +1,3 @@
-from src.item import Item
-
 class Package:
     def __init__(self, package_id, order_id=None):
         self.package_id = package_id

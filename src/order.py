@@ -1,5 +1,3 @@
-from src.package import Package
-
 class Order:
     def __init__(self, order_id, name):
         self.order_id = order_id

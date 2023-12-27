@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from src.package import Package
 from src.item import Item
@@ -18,7 +17,7 @@ def create_orders(orders_file_path):
         item_id = row['items']
 
         if package_id not in packages:
-            packages[package_id] = Package(package_id, package_id)
+            packages[package_id] = Package(package_id, 0)
                     
         if not packages[package_id].has_item(item_id):
             packages[package_id].add_item(Item(item_id))
@@ -27,11 +26,18 @@ def create_orders(orders_file_path):
         value = row['values']
         packages[package_id][item_id].update_by_label(label, value)
 
+    items_id = []
+    for package_id in packages:
+        for item in packages[package_id].get_items():
+            if item.get_id() in items_id:
+                item.update_by_label("item_id", items_id[-1] + 1)
+            items_id.append(item.get_id())
+
     for package_id in packages:
         print(packages[package_id])
         packages[package_id].print_items()
     
-    order = Order(1, "Test")
+    order = Order(0, "Test")
     for package_id in packages:
         order.add_package(packages[package_id])
     

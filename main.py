@@ -1,17 +1,7 @@
-import sys
 import os
-import pandas as pd
-from src.package import Package
-from src.item import Item
-from src.order import Order
 from src.create_orders import create_orders
 from src.add_orders import add_orders
 import argparse
-
-def open_excel_file(path):
-    dataframe = pd.read_excel(path)
-    return dataframe
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -23,7 +13,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     orders_file_path = args.file
 
-    orders_file_path = os.path.join(os.path.dirname(__file__), 'Orders.xlsx')
     orders = create_orders(orders_file_path)
     print(orders)
     add_orders(args.host, args.database, args.user, args.password, [orders])
