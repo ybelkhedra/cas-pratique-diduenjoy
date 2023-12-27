@@ -7,7 +7,7 @@ class Item:
         self.warranty = warranty
         self.duration = duration
     
-    def getId(self):
+    def get_id(self):
         return self.item_id
 
     def __getitem__(self, label):
@@ -21,3 +21,10 @@ class Item:
 
     def __str__(self):
         return f"Item ID : {self.item_id}, Name : {self.name}, Price : {self.price}, Ref : {self.ref}, Warranty : {self.warranty}, Duration : {self.duration}"
+
+
+if __name__ == "__main__":
+
+    i = Item(1, "name", "price", "ref", "warranty", "duration")
+    print(i)
+    print(i["name"])

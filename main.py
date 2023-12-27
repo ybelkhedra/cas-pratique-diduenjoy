@@ -4,6 +4,9 @@ import pandas as pd
 from src.package import Package
 from src.item import Item
 from src.order import Order
+from src.create_orders import create_orders
+from src.add_orders import add_orders
+import argparse
 
 def open_excel_file(path):
     dataframe = pd.read_excel(path)
@@ -11,27 +14,17 @@ def open_excel_file(path):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", type=str, default="Orders.xlsx", help="path to the xlsx file containing the orders")
+    parser.add_argument("-H", "--host", type=str, default="localhost", help="host of the database")
+    parser.add_argument("-d", "--database", type=str, default="postgres", help="database name")
+    parser.add_argument("-u", "--user", type=str, default="postgres", help="user name")
+    parser.add_argument("-p", "--password", type=str, default="postgres", help="password")
+    args = parser.parse_args()
+    orders_file_path = args.file
 
-    orders_excel = open_excel_file('Orders.xlsx')
-
-    packages = {}
-
-    print(orders_excel)
-    for index, row in orders_excel.iterrows():
-        package_id = row['packages']
-        item_id = row['items']
-
-        if package_id not in packages:
-            packages[package_id] = Package(package_id, package_id)
-                    
-        if not packages[package_id].hasItem(item_id):
-            packages[package_id].add_item(Item(item_id))
-        
-        label = row['lables']
-        value = row['values']
-        packages[package_id][item_id].update_by_label(label, value)
-
-    for package_id in packages:
-        print(packages[package_id])
-        packages[package_id].print_items()
+    orders_file_path = os.path.join(os.path.dirname(__file__), 'Orders.xlsx')
+    orders = create_orders(orders_file_path)
+    print(orders)
+    add_orders(args.host, args.database, args.user, args.password, [orders])
 
